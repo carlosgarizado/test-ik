@@ -1,0 +1,121 @@
+<ion-content>
+  <div class="container-confirm">
+    <div class="confirm-page">
+      <app-header></app-header>
+      <div class="container-dasboard">
+        <div class="button-container">
+          <button
+            expand="block"
+            color="danger"
+            class="main-button"
+            (click)="goRoute()"
+          >
+            Programar Servicios
+          </button>
+        </div>
+        @if(booking?.next_booking){
+        <ion-card class="reservation-card">
+          <div class="container-name">
+            <span>Nombre:</span>
+            <span>{{booking.next_booking?.service}}</span>
+          </div>
+          <ion-card-header>
+            <ion-card-subtitle
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+              ><span>
+                Fecha: {{booking.next_booking?.start_date| date: 'mediumDate'}}
+              </span>
+              @if (this.location) {
+              <ion-button
+                shape="round"
+                fill="outline"
+                color="primary"
+                (click)="openMapModal()"
+              >
+                <ion-icon name="map-outline" slot="start"></ion-icon>
+                Ver mapa completo
+              </ion-button>
+              }
+            </ion-card-subtitle>
+            <div class="container-detail-rout">
+              <div>
+                <!-- <strong>Ruta:</strong> -->
+                <span>Inicio:</span>
+                <!-- <span class="hour"
+                  >{{ formatHourToAmPm(booking.next_booking?.start_time)}}</span
+                > -->
+                <span>{{booking.next_booking?.route?.origin}}</span>
+              </div>
+              <span class="icon"
+                ><ion-icon
+                  name="arrow-forward-outline"
+                  class="arrow-icon"
+                ></ion-icon
+              ></span>
+              <div>
+                <span>Destino:</span>
+                <!-- <span class="hour"
+                  >{{ formatHourToAmPm(booking.next_booking?.end_time) }}</span
+                > -->
+                <span>{{booking.next_booking?.route?.destination}}</span>
+              </div>
+            </div>
+          </ion-card-header>
+          <ion-card-content class="container-information">
+            <div class="container-information-reservarion">
+              <div class="container-informarion-vehicle">
+                <span>Information vehicular</span>
+                <p>
+                  Placa:
+                  {{booking.next_booking?.contact?.additional_parameters?.placa}}
+                </p>
+                <p>
+                  Vehículo:
+                  {{booking.next_booking?.contact?.additional_parameters?.Vehiculo}}
+                </p>
+              </div>
+
+              <div class="map-section">
+                <div id="map" style="height: 100px"></div>
+              </div>
+            </div>
+            <ion-button
+              shape="round"
+              fill="outline"
+              color="danger"
+              (click)="goQrScanner(booking.next_booking!.service_id)"
+            >
+              <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+              Escanear QR
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+        }
+
+        <ion-list class="reservation-list">
+          <div class="header-list">
+            <ion-label>Reservaciones</ion-label>
+            <ion-button size="small" fill="clear" (click)="toggleList()">
+              {{ showReservations ? 'Ver Menos' : 'Ver Más' }}
+            </ion-button>
+          </div>
+        </ion-list>
+        @if(showReservations){
+        <div
+          class="container-list"
+          [ngClass]="{ 'container-list-limited': !booking?.next_booking}"
+        >
+          <app-card-reservation
+            [reservations]="booking.history"
+          ></app-card-reservation>
+        </div>
+        }
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</ion-content>

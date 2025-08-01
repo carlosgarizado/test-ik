@@ -1,0 +1,37 @@
+<ion-content>
+  <div class="container-qr">
+    <div class="qr-page">
+      <app-header></app-header>
+      <div class="scanner-container">
+        <video [ngClass]="{ 'hidden': scannedResult }" #video width="100%" height="auto" autoplay muted></video>
+        @if(!scannedResult){
+        <div class="scan-frame">
+          <div class="corner top-left"></div>
+          <div class="corner top-right"></div>
+          <div class="corner bottom-left"></div>
+          <div class="corner bottom-right"></div>
+        </div>
+        }
+      </div>
+      @if(scannedResult &&  !showAlert){
+      <div class="succes-qr">
+        <span class="material-icons">check_circle</span>
+        <span class="message">Código escaneado con éxito</span>
+      </div>
+      <div class="button">
+        <button (click)="completeBooking()">Completar Servicio</button>
+      </div>
+      }
+      @if(scannedResult && showAlert){
+      <div class="error-qr">
+        <ion-icon name="warning-outline" color="danger" class="icon-alert"></ion-icon>
+        <span class="message">Error al escanear Código</span>
+      </div>
+      <div class="button-error">
+        <button (click)="goDashboard()">Regresar</button>
+      </div>
+      }
+      <app-footer></app-footer>
+    </div>
+  </div>
+</ion-content>

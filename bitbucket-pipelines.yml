@@ -1,0 +1,100 @@
+# This is a sample build configuration for Other.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: beevelop/ionic:latest
+
+install-node-modules: &install-node-modules
+  step: 
+    name: Install proyect dependencies
+    caches:
+      - node
+    script:
+      - npm install -g npm-cli-login
+      - npm install
+      - node -v
+      - echo "Node modules installed"
+
+build-staging: &build-staging
+  step: 
+    name: Build project
+    caches:
+      - node
+    script:
+      - ionic build --configuration development
+    artifacts: # defining the artifacts to be passed to each future step.
+      - www/**
+
+
+deploy-staging: &deploy-staging
+  step:
+    name: Deploy to aws staging
+    deployment: staging
+    script:
+      # Install aws
+      - apt-get update && apt-get install -y python3-pip 
+      - pip3 install -U awscli==1.20.51
+      - aws --version
+      # Add aws credentials
+      - export AWS_ACCESS_KEY_ID="$AWS_STAGING_ACCESS_KEY_ID"
+      - export AWS_SECRET_ACCESS_KEY="$AWS_STAGING_SECRET_ACCESS_KEY"
+      - export AWS_DEFAULT_REGION="$AWS_STAGING_DEFAULT_REGION"
+      - echo "Uploading to $AWS_STAGING_ACCESS_KEY_ID"
+      # Deploy to aws
+      - aws s3 cp www/ s3://taskgoreservasfront --recursive
+      - aws cloudfront create-invalidation --distribution-id E3A5972424NTMJ --paths "/*"
+
+build-production: &build-production
+  step:
+    name: Build project
+    caches:
+      - node
+    script:
+      - ionic build --prod
+    artifacts: # defining the artifacts to be passed to each future step.
+      - www/**
+
+deploy-production-v2: &deploy-production
+  step:
+    name: Deploy to aws production v2
+    deployment: production
+    script:
+      # Install aws
+      - apt-get update && apt-get install -y python3-pip 
+      - pip3 install -U awscli==1.20.51
+      - aws --version
+      # Add aws credentials
+      - export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
+      - export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+      - export AWS_DEFAULT_REGION="$AWS_DEFAULT_REGION"
+      - echo "Uploading to $AWS_ACCESS_KEY_ID"
+      # Deploy to aws
+      - aws s3 cp www/ s3://taskgoreservas --recursive
+      - aws cloudfront create-invalidation --distribution-id AAAAAAAAA --paths "/*"
+
+
+
+pipelines:
+  # Validate on pull request
+  pull-requests:
+    develop:
+      - <<: *install-node-modules
+      - <<: *build-production
+    staging:
+      - <<: *install-node-modules
+      - <<: *build-production
+    master:
+      - <<: *install-node-modules
+      - <<: *build-production
+
+  # Automatic deployment
+  branches:
+    staging:
+      - <<: *install-node-modules
+      - <<: *build-staging
+      - <<: *deploy-staging
+    master:
+      - <<: *install-node-modules
+      - <<: *build-production
+      - <<: *deploy-production

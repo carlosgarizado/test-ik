@@ -1,0 +1,31 @@
+.modal-wrapper {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 10px;
+    }
+  
+    .message {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 20px;
+    }
+  
+    .btn-group {
+      display: flex;
+      justify-content: space-around;
+  
+      ion-button {
+        min-width: 40%;
+        font-weight: bold;
+      }
+    }
+  }
+  

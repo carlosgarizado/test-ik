@@ -1,0 +1,35 @@
+.header-img {
+  img {
+    max-width: 220px;
+    max-height: 50px;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      max-width: 298px;
+      max-height: 94px;
+    }
+  }
+
+  &.dual-img {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0px;
+      margin-bottom: 30px;
+    }
+  }
+
+  &.single-img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    img {
+      margin: 0 auto;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<ion-content>
+  <div class="container-confirm">
+    <div class="confirm-page">
+      <app-header></app-header>
+      <div class="container-message">
+        <h2 class="title">Servicio Confirmado</h2>
+        <span class="alert-route"
+          >Tu ruta: <span>{{routeName}}</span>-<span>{{startDate}}</span> a las
+          <span>{{startTime}}</span></span
+        >
+        <span class="alert-email"
+          >🚫 <strong>Nota: </strong> la hora corresponde a la
+          <strong>salida del bus desde el punto de inicio, no</strong> a la hora
+          exacta de tu parada.
+        </span>
+        <span class="alert-email"
+          >✉️ La confirmación de tu solicitud ha sido enviada a tu correo
+          electrónico.</span
+        >
+        <div class="button">
+          <button (click)="change()">Ir a mis reservas</button>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</ion-content>

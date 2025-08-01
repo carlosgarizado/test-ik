@@ -1,0 +1,75 @@
+<ion-modal class="modal-terms" #modalTerms>
+  <ng-template>
+    <app-terms-and-conditions
+      [terms]="websiteInfo?.terms"
+    ></app-terms-and-conditions>
+  </ng-template>
+</ion-modal>
+
+<ion-content>
+  <div class="container-login">
+    @if (websiteInfo) {
+    <div class="login-page">
+      <app-header></app-header>
+      <div class="container-form">
+        <h2 class="container-title">¡Solicita Tu Servicio Aquí!</h2>
+        @if(websiteInfo.logo){
+        <div class="logo-img">
+          <img [src]="websiteInfo.banner" alt="Logo" />
+        </div>
+        }
+        <form [formGroup]="loginForm" novalidate>
+          <div class="container-form">
+            <div class="form">
+              <p>Ingresa tu número de identificación</p>
+              <input
+                [ngClass]="{ 'is-invalid': isControlInvalid('documentNumber') }"
+                formControlName="documentNumber"
+                type="text"
+                placeholder="Número de documento"
+              />
+            </div>
+            <div *ngIf="getDocumentErrorMessage()" class="error">
+              <small>{{ getDocumentErrorMessage() }}</small>
+            </div>
+            <div class="terms-container">
+              <ion-checkbox
+                class="custom-checkbox"
+                aria-label="Aceptar términos"
+                formControlName="personalData"
+                [color]="'warning'"
+              ></ion-checkbox>
+              <label class="terms-label">
+                Acepto el
+                <a target="_blank" [href]="websiteInfo.privacy_policy" class="terms-link"
+                  >Tratamiento de datos personales</a
+                >
+              </label>
+            </div>
+            <div class="terms-container">
+              <ion-checkbox
+                class="custom-checkbox"
+                aria-label="Aceptar términos"
+                formControlName="terms"
+                [color]="'warning'"
+              ></ion-checkbox>
+              <label class="terms-label">
+                Acepto los
+                <a target="_blank" [href]="websiteInfo.terms" class="terms-link"
+                  >Términos y condiciones</a
+                >
+              </label>
+            </div>
+            <div class="button">
+              <button [disabled]="loginForm.invalid" (click)="login()">
+                Solicitar Servicio
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <app-footer></app-footer>
+    </div>
+    }
+  </div>
+</ion-content>

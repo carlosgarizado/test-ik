@@ -1,0 +1,159 @@
+<ion-content>
+  <div class="container-route">
+    <div class="route-page">
+      <app-header></app-header>
+      <div class="container-list-route">
+        <h2 class="title-route">
+          <button (click)="goDashboard()">
+            <ion-icon name="arrow-back-outline"></ion-icon></button
+          >Selecciona tu ruta
+        </h2>
+        <div class="fecha-wrapper">
+          <label class="title-date" for="fecha">Selecciona una fecha:</label>
+          <input
+            [min]="minDate"
+            [max]="maxDate"
+            id="fecha"
+            type="date"
+            [(ngModel)]="selectedDate"
+            (ngModelChange)="getRoutes()"
+            class="input-fecha"
+          />
+        </div>
+        @if( routes.length > 0){
+        <div class="container-list-route-card">
+          @for (route of routes; track route; let i = $index) {
+          <ion-card class="vehicle-card">
+            <ion-card-header>
+              <ion-card-title>
+                <div class="name-route">
+                  <span class="name">Nombre:</span>
+                  <span>{{route.name}}</span>
+                </div>
+                <div class="index-info">
+                  <ion-icon name="people-outline"> </ion-icon
+                  ><span>
+                    {{ route.remaining_capacity}} sillas disponibles</span
+                  >
+                </div>
+              </ion-card-title>
+              <div class="plate-info">
+                <span class="plate-label">Vehiculo:</span>
+                <span class="plate"
+                  >{{ route.contact_additional_parameters?.Placa}}</span
+                >
+                -
+                <span class="driver"
+                  >{{ route.contact_additional_parameters?.Vehiculo}}</span
+                >
+              </div>
+            </ion-card-header>
+
+            <ion-card-content class="card-content">
+              <div
+                class="info-box"
+                [ngClass]="{
+                  'not-available': route.state === 'full' || route.remaining_capacity <= 0
+                }"
+              >
+                <div class="origin">
+                  <div class="container-origin">
+                    <button
+                      [disabled]="route.state === 'full' || route.remaining_capacity <= 0"
+                    >
+                      <ion-icon name="location-outline"></ion-icon>
+                    </button>
+                    <span class="name-location">Inicio:</span>
+                    <span
+                      id="place-trigger"
+                      class="name-location"
+                      (click)="tooltipText = route.first_stop.description"
+                      >{{route.first_stop.description }}</span
+                    >
+                  </div>
+                  <!-- <span class="time">{{ route.schedule_start_time }}</span> -->
+                </div>
+                <button
+                  (click)="openStopModal(route.id)"
+                  class="button-open-modal"
+                >
+                  <ion-icon
+                    name="arrow-forward-outline"
+                    class="arrow-icon"
+                  ></ion-icon>
+                </button>
+                <div class="origin">
+                  <div class="container-origin">
+                    <button
+                      [disabled]="route.state === 'full' || route.remaining_capacity <= 0"
+                    >
+                      <ion-icon name="location-outline"></ion-icon>
+                    </button>
+                    <span class="name-location">Destino:</span>
+                    <span
+                      class="name-location"
+                      id="end-trigger"
+                      (click)="tooltipText = route.first_stop.description"
+                      >{{route.last_stop.description }}</span
+                    >
+                  </div>
+                  <!-- <span class="time">{{ route.schedule_end_time }}</span> -->
+                </div>
+              </div>
+              @if(route.state === 'available'){
+              <div class="button">
+                <button (click)="openConfirmationModal(route.id, route)">
+                  Reservar
+                </button>
+              </div>
+              }
+            </ion-card-content>
+          </ion-card>
+          }
+        </div>
+        } @else { @if(selectedDate && showAlert ){
+        <h1>No hay rutas para esta fecha</h1>
+        }
+        <h1 tooltip="I'm a tooltip below a button" positionV="bottom">
+          Seleccione una fecha
+        </h1>
+        }
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</ion-content>
+<ion-modal #termsModal [presentingElement]="presentingEl">
+  <ng-template>
+    <app-modal-route [rutaId]="routeId"></app-modal-route>
+  </ng-template>
+</ion-modal>
+<ion-modal
+  #confirmationModal
+  [presentingElement]="presentingEl"
+  cssClass="confirmation-modal"
+>
+  <ng-template>
+    <app-modal-confirmation
+      [title]="'Confirmación'"
+      [message]="'¿Desea confirmar reserva?'"
+    >
+    </app-modal-confirmation>
+  </ng-template>
+</ion-modal>
+
+<ion-popover trigger="place-trigger" arrow="top" class="tooltip-popover">
+  <ng-template>
+    <ion-card class="popover-card">
+      <ion-card-content> {{ tooltipText }} </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-popover>
+
+<ion-popover trigger="end-trigger" arrow="top" class="tooltip-popover">
+  <ng-template>
+    <ion-card class="popover-card">
+      <ion-card-content>{{ tooltipText }}</ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-popover>

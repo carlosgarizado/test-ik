@@ -1,0 +1,183 @@
+@mixin column() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin row() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-confirm {
+  @include column;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #e5e7eb;
+
+  .confirm-page {
+    @include column;
+    background-color: #fff;
+    justify-content: normal;
+    width: 100%;
+    max-width: 654px;
+    min-height: 800px;
+    border-radius: 6px;
+    padding: 32px;
+    position: relative;
+
+    .container-dasboard {
+      margin-top: 10px;
+      width: 100%;
+      border: 1px solid var(--ion-color-primary);
+      border-radius: 6px;
+      box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+      height: 700px;
+      @media (max-width: 768px) {
+        max-height: 80vh;
+      }
+      .button-container {
+        margin: 20px 10px;
+
+        button {
+          width: 100%;
+          height: 35px;
+          border-radius: 20px;
+          background-color: var(--ion-color-primary);
+          font-size: 16px;
+          color: var(--ion-color-text);
+          font-weight: bold;
+        }
+      }
+
+      .reservation-card {
+        .container-name{
+          padding: 10px 16px 0px 16px;
+          display: flex;
+          gap: 5px ;
+          span{
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+          }
+        }
+        ion-card-subtitle {
+          font-size: 16px;
+          color: #000;
+          font-weight: bold;
+          @media (max-width: 768px) {
+            display: flex;
+            flex-direction: column;
+            ion-button {
+              width: 100%;
+            }
+          }
+        }
+
+        ion-card-header {
+          .container-detail-rout {
+            @include row;
+            justify-content: left;
+            font-size: 14px;
+            color: #000;
+            font-weight: bold;
+            gap: 5px;
+            div{
+              .hour{
+                margin-left: 3px;
+                margin-right: 3px;
+              }
+            }
+          
+            @media (max-width: 768px) {
+              display: flex;
+              flex-direction: column;
+              font-size: 14px;
+              justify-content: left;
+              align-items: normal;
+              .icon{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                  ion-icon{
+                      transform: rotate(90deg);
+                      transition: transform 0.3s ease;
+                  }
+              }
+            }
+          }
+        }
+
+        .container-information {
+          @include column;
+
+          .container-information-reservarion {
+            @include row;
+            justify-content: space-between;
+            width: 100%;
+
+            .container-informarion-vehicle {
+              span {
+                font-size: 16px;
+                color: #000;
+                font-weight: bold;
+              }
+            }
+
+            .map-section {
+              width: 200px;
+            }
+          }
+        }
+   
+      }
+
+      .reservation-list {
+        padding: 0px;
+
+        .header-list {
+          @include row;
+          justify-content: space-between;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          padding: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          border: 1px solid var(--ion-color-primary);
+          border-radius: 6px;
+          margin: 0px 10px 0px 10px;
+
+          ion-button {
+            color: #000;
+          }
+        }
+      }
+
+      .container-list {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 10px;
+        padding-right: 5px; 
+      
+        app-card-reservation {
+          width: 100%;
+          flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+          max-height: 200px;
+        }
+      }
+
+      .container-list-limited{
+        max-height: 550px;
+        @media (max-width: 768px) {
+          max-height: 40vh;
+        }
+      }
+      
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@if (websiteInfo) {
+<div
+  class="header-img"
+  [ngClass]="{
+    'single-img': onlyOneImage(),
+    'dual-img': hasBothImages()
+  }"
+>
+  @if(websiteInfo.logo){
+  <img (click)="goDashboard()" [src]="websiteInfo.logo" alt="Logo" />
+  } @if(websiteInfo.secondary_logo){
+  <img
+    (click)="goDashboard()"
+    [src]="websiteInfo.secondary_logo"
+    alt="Banner"
+  />
+  }
+</div>
+}

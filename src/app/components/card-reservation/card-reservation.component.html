@@ -1,0 +1,65 @@
+<div class="container-card">
+  @for (reservation of reservations; track reservation; let i = $index) {
+  <ion-card class="reservation-card">
+    <ion-card-content class="card-content">
+      <div class="container-name">
+        <span>Nombre:</span>
+        <span>{{reservation.service}}</span>
+      </div>
+      <div class="container-information">
+        <div class="card-info">
+          <div class="card-date">
+            <span>Fecha: </span
+            >{{ reservation.start_date | date : "mediumDate" }}
+          </div>
+          <div class="card-time">
+            <!-- {{
+              formatDateTimeToAmPm(
+                reservation.start_date,
+                reservation.start_time
+              )
+            }}
+            →
+            {{
+              formatDateTimeToAmPm(reservation.end_date, reservation.end_time)
+            }} -->
+          </div>
+          <div class="card-plate">
+            Placa: {{ reservation.contact.additional_parameters?.placa }}
+          </div>
+          <div class="card-brand">
+            {{ reservation.contact.additional_parameters?.Vehiculo }}
+          </div>
+        </div>
+        <div>
+          <img
+            [src]="reservation.contact.additional_parameters?.photo"
+            alt="Vehicle Image"
+            class="card-img"
+          />
+        </div>
+      </div>
+      <div class="container-button">
+        <div
+          class="container-state"
+          [ngClass]="getStateClass(reservation.state)"
+        >
+          {{ getStateLabel(reservation.state) }}
+        </div>
+        @if(reservation.state === "pending"){
+        <ion-button
+          fill="outline"
+          color="danger"
+          size="small"
+          class="scan-btn"
+          (click)="goQrScanner(reservation.service_id)"
+        >
+          <ion-icon slot="start" name="qr-code-outline"></ion-icon>
+          ESCANEAR QR
+        </ion-button>
+        }
+      </div>
+    </ion-card-content>
+  </ion-card>
+  }
+</div>

@@ -1,0 +1,31 @@
+<div class="alert-container" [ngClass]="type">
+  <div class="alert-icon" [ngClass]="type">
+    <div class="icon-circle">
+      <ion-icon [name]="typeIconMap[type]"></ion-icon>
+    </div>
+  </div>
+
+  <h2>{{ title }}</h2>
+  <p [innerHTML]="message"></p>
+  <div
+    class="button-group"
+    [ngClass]="{
+      single: buttons.length === 1,
+      double: buttons.length === 2,
+      multiple: buttons.length > 2
+    }"
+  >
+    @for (btn of buttons; track $index) {
+    <div class="button">
+      <ion-button
+        [color]="btn.color || 'medium'"
+        (click)="onButtonClick(btn)"
+        [expand]="buttons.length === 1 ? 'block' : 'undefined'"
+        [fill]="btn.fill || 'solid'"
+      >
+        {{ btn.label }}
+      </ion-button>
+    </div>
+    }
+  </div>
+</div>
